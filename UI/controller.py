@@ -16,4 +16,13 @@ class Controller:
         * Numero di Collegamenti
         * Lista di Collegamenti che superano l'importo indicato come soglia
         """
-        # TODO
+
+        minimo_importo = self._view.importo_medio_minimo.value
+        if isinstance(minimo_importo, str) or minimo_importo < 0:
+            self._view.show_alert("L'importo medio minimo deve essere un numero maggiore o uguale a zero!")
+        else:
+
+            self._view.lista_visualizzazione.controls.clear()
+
+
+        # TODO modificare qui per prendere le cose dal model e stamparle nella ListView nella view
