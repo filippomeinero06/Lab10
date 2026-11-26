@@ -17,12 +17,23 @@ class Controller:
         * Lista di Collegamenti che superano l'importo indicato come soglia
         """
 
-        minimo_importo = self._view.importo_medio_minimo.value
-        if isinstance(minimo_importo, str) or minimo_importo < 0:
-            self._view.show_alert("L'importo medio minimo deve essere un numero maggiore o uguale a zero!")
-        else:
+        try:
+            minimo_importo = float(self._view.importo_medio_minimo.value)
+            if minimo_importo < 0:
+                self._view.show_alert("L'importo medio minimo deve essere un numero maggiore o uguale a zero!")
+            else:
+                self._model.costruisci_grafo(minimo_importo)
 
-            self._view.lista_visualizzazione.controls.clear()
+                self._view.lista_visualizzazione.controls.clear()
+                self._view.lista_visualizzazione.controls.append(ft.Text(f"Numero di Filiali: {self._model.get_num_nodes()}"))
+                self._view.lista_visualizzazione.controls.append(ft.Text(f"Numero di Collegamenti: {self._model.get_num_edges()}"))
+                self._view.update()
+
+                for i, arco in enumerate(self._model.get_all_edges()):
+                    self._view.lista_visualizzazione.controls.append(ft.Text(f"{i+1}) [{arco[0]} -> {arco[1]}] -- Importo medio per bonifico: €{arco[2]:.2f}"))
+
+                self._view.update()
+        except ValueError:
+            self._view.show_alert("Inserisci un numero")
 
 
-        # TODO modificare qui per prendere le cose dal model e stamparle nella ListView nella view
